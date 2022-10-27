@@ -36,6 +36,10 @@ class Game:
     def drawFood(self):
         for food in self.foods:
             pygame.draw.rect(self.root, food.color, (food.xpos, food.ypos, food.size, food.size) )
+            
+    def checkForFoodColision(self):
+        
+        
 
 
 class Agent:

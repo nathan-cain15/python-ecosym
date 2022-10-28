@@ -31,7 +31,7 @@ while run:
 
     if first == True:
         game = Game(root, 1200, 900)
-        game.generateAgents(10, 10, black, 40)
+        game.generateAgents(10, 10, black)
         game.generateFood(30, 5, lightGreen)
         for agent in game.agents:
             agent.setDirection()
@@ -41,14 +41,21 @@ while run:
     if ticks % 50 == 0:
         for agent in game.agents:
             agent.timeInDirection -= 1
-            print(agent.timeInDirection)
             agent.move(1200, 900)
 
-
+    if ticks % 1000 == 0:
+        game.generateFood(5, 5, lightGreen)
 
     game.drawAgents()
     game.drawFood()
-    print(ticks)
+    game.checkForFoodInSight()
+    game.checkForColisions()
+
+
+    agents = [i for i in game.agents]
+    #print(agents[0].currentFood)
+    #print(agents[0].movementAngle)
+
 
     pygame.display.flip()
 

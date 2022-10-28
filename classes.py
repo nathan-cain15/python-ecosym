@@ -67,9 +67,9 @@ class Game:
                     angle = int(math.degrees(math.atan((food.ypos - agent.ypos)/(food.xpos - agent.xpos))))
                     print(angle)
                     print(" ")
-                    if food.ypos - agent.ypos >= 0 and food.xpos - agent.xpos <= 0:
+                    if food.ypos - agent.ypos <= 0 and food.xpos - agent.xpos <= 0:
                         agent.movementAngle = 180 - angle
-                    elif food.ypos - agent.ypos <= 0 and food.xpos - agent.xpos <= 0:
+                    elif food.ypos - agent.ypos >= 0 and food.xpos - agent.xpos <= 0:
                         agent.movementAngle = 180 + angle
                     elif food.ypos - agent.ypos <= 0 and food.xpos - agent.xpos >= 0:
                         agent.movementAngle = 360 + angle

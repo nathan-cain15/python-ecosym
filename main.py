@@ -37,7 +37,12 @@ while run:
             agent.setDirection()
 
         first = False
+    agents = [i for i in game.agents]
 
+    game.drawAgents()
+    game.drawFood()
+    game.checkForFoodInSight()
+    game.checkForColisions()
     if ticks % 50 == 0:
         for agent in game.agents:
             agent.timeInDirection -= 1
@@ -52,9 +57,9 @@ while run:
     game.checkForColisions()
 
 
-    agents = [i for i in game.agents]
-    #print(agents[0].currentFood)
-    #print(agents[0].movementAngle)
+
+    #print(agents)
+
 
 
     pygame.display.flip()

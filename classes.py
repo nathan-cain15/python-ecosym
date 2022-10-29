@@ -37,47 +37,25 @@ class Game:
 
     def checkForColisions(self):
         for agent in self.agents:
+            if agent.currentFood != None:
+                if agent.currentFood not in self.foods:
+                    agent.currentFood = None
             for food in self.foods:
                 if agent.rect.colliderect(food.rect):
                     agent.energy += 1
                     agent.setDirection()
                     agent.timeInDirection = agent.timeInDirectionConst
                     agent.energy += food.energy
-                    agent.currentFood = False
+                    agent.currentFood = None
                     self.foods.remove(food)
 
     def checkForFoodInSight(self):
         for agent in self.agents:
-            if agent.currentFood == True:
+            if agent.currentFood != None:
                 continue
             for food in self.foods:
                 if agent.circleRect.colliderect(food.rect):
-                    agent.currentFood = True
-                    if food.xpos - agent.xpos == 0:
-                        food.xpos += 1
-
-                    print("agent ")
-                    print(agent.xpos)
-                    print(agent.ypos)
-                    print("food")
-                    print(food.xpos)
-                    print(food.ypos)
-                    print(" ")
-
-                    angle = int(math.degrees(math.atan((food.ypos - agent.ypos)/(food.xpos - agent.xpos))))
-                    print(angle)
-                    print(" ")
-                    if food.ypos - agent.ypos <= 0 and food.xpos - agent.xpos <= 0:
-                        agent.movementAngle = 180 - angle
-                    elif food.ypos - agent.ypos >= 0 and food.xpos - agent.xpos <= 0:
-                        agent.movementAngle = 180 + angle
-                    elif food.ypos - agent.ypos <= 0 and food.xpos - agent.xpos >= 0:
-                        agent.movementAngle = 360 + angle
-                    else:
-                        agent.movementAngle = angle
-                    agent.timeInDirection = 100
-                    print(agent.movementAngle)
-                    print(" ")
+                    agent.currentFood = food
 
 
 class Agent:
@@ -94,15 +72,28 @@ class Agent:
         self.energy = 300
         self.circleRect = None
         self.rect = None
-        self.currentFood = False
+        self.currentFood = None
 
     def setDirection(self):
         randAngle = random.randint(0, 360)
         self.movementAngle = randAngle
 
     def move(self, maxX, maxY):
-        self.xpos += int(math.cos(self.movementAngle) * self.speed)
-        self.ypos += int(math.sin(self.movementAngle) * self.speed)
+        if self.currentFood != None:
+            if self.currentFood.xpos - self.xpos == 0:
+                self.xpos += 1
+            angle = math.degrees(math.atan((self.currentFood.ypos - self.ypos) / (self.currentFood.xpos - self.xpos)))
+            if self.currentFood.ypos - self.ypos <= 0 and self.currentFood.xpos - self.xpos <= 0:
+                self.movementAngle = 180 + angle
+            elif self.currentFood.ypos - self.ypos >= 0 and self.currentFood.xpos - self.xpos <= 0:
+                self.movementAngle = 180 + angle
+
+            elif self.currentFood.ypos - self.ypos <= 0 and self.currentFood.xpos - self.xpos >= 0:
+                self.movementAngle = 360 + angle
+            else:
+                self.movementAngle = angle
+        self.xpos += math.cos(math.radians(self.movementAngle)) * self.speed
+        self.ypos += math.sin(math.radians(self.movementAngle)) * self.speed
 
         if self.xpos <= 0:
             self.xpos += 5

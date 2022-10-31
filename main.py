@@ -19,6 +19,7 @@ black = (0, 0, 0)
 
 run = True
 first = True
+paused = False
 
 while run:
     for event in pygame.event.get():
@@ -31,35 +32,34 @@ while run:
 
     if first == True:
         game = Game(root, 1200, 900)
-        game.generateAgents(10, 10, black)
-        game.generateFood(30, 5, lightGreen)
+        game.generateAgents(10, black, 10, 50, 10, 5)
+        game.generateFood(100, 5, lightGreen)
         for agent in game.agents:
             agent.setDirection()
-
+        pauseButton = Button(root, 1100, 50)
         first = False
+
     agents = [i for i in game.agents]
 
     game.drawAgents()
     game.drawFood()
     game.checkForFoodInSight()
     game.checkForColisions()
-    if ticks % 50 == 0:
+    if ticks % 50 == 0 and not paused:
         for agent in game.agents:
             agent.timeInDirection -= 1
             agent.move(1200, 900)
+        game.killAgents()
+        game.agentsReproduce()
+        print([agents[-1].speed, agents[-1].sightRange, agents[-1].timeInDirectionConst])
 
-    if ticks % 1000 == 0:
-        game.generateFood(5, 5, lightGreen)
+    if ticks % 1000 == 0 and not paused:
+        game.generateFood(8, 5, lightGreen)
 
     game.drawAgents()
     game.drawFood()
     game.checkForFoodInSight()
     game.checkForColisions()
-
-
-
-    #print(agents)
-
 
 
     pygame.display.flip()

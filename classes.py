@@ -163,3 +163,16 @@ class Button:
             return True
         return False
 
+class Text:
+    def __init__(self, root, xpos, ypos, color):
+        self.root = root
+        self.xpos = xpos
+        self.ypos = ypos
+        self.color = color
+
+    def draw(self, text, size):
+        font = pygame.font.SysFont('Comic Sans MS', size)
+        textSurface = font.render(text, True, self.color)
+        self.root.blit(textSurface, (self.xpos, self.ypos))
+
+
